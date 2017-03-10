@@ -13,18 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TextView;
 
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
-import fr.btssio.pharma.orm.runtime.util.SimpleSQLiteOpenHelper;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private VisiteurDAO visiteurDAO;
+    private TextView tvVisiteurNom, tvVisiteurPrenom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -105,10 +105,21 @@ public class MainActivity extends AppCompatActivity
 //        visiteurDAO.insert(flo);
 //        visiteurDAO.insert(xavi);
 
-        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(this.getApplicationContext()));
-        List<Visiteur> list = new ArrayList<>();
-        list.addAll(visiteurDAO.getVisiteurList());
-        Log.d("visiteur", list.toString());
+//        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(this.getApplicationContext()));
+//        List<Visiteur> list = new ArrayList<>();
+//        list.addAll(visiteurDAO.getVisiteurList());
+//        Log.d("visiteur", list.toString());
+
+        //Récupération du visiteur connecté
+        String vis_mat = getIntent().getExtras().getString("vis_mat");
+        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
+
+        tvVisiteurNom = (TextView) findViewById(R.id.tvVisiteurNom);
+        tvVisiteurPrenom = (TextView) findViewById(R.id.tvVisiteurPrenom);
+
+        tvVisiteurPrenom.setText(visiteur.getVisPrenom());
+        tvVisiteurNom.setText(visiteur.getVisNom());
     }
 
     @Override

@@ -9,11 +9,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
+import fr.btssio.pharma.orm.gen.DAOProvider;
+import fr.btssio.pharma.orm.gen.Visiteur;
+import fr.btssio.pharma.orm.gen.VisiteurDAO;
+import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
+import fr.btssio.pharma.orm.runtime.query.SelectQuery;
+import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1;
     private EditText etUsername, etPassword;
     private Button btnLogin;
+    private VisiteurDAO visiteurDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +50,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if (!error) {
-                    Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivityForResult(mainIntent, REQUEST_CODE);
+                    //Vérification du visiteur en BDD
+                    visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+                    List<Visiteur> visiteurs = visiteurDAO.getVisiteurList(VisiteurDAO.VIS_NOM.eq(getUsername()));
+
+                    for (Visiteur visiteur :
+                            visiteurs) {
+                        if (visiteur.getVisDateemb().equals(getPassword())) {
+                            Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                            mainIntent.putExtra("vis_mat", visiteur.getVisMat());
+                            startActivityForResult(mainIntent, REQUEST_CODE);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Nom d'utilisateur ou mot de passe incorrect !",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
                 }
             }
         });
