@@ -3,6 +3,7 @@ package fr.btssio.pharma;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
@@ -47,59 +51,64 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
-        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(helper);
+//        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
+//        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(helper);
+//
+//        Visiteur michel = new Visiteur();
+//        michel.setVisMat("mic64");
+//        michel.setVisNom("Pompas");
+//        michel.setVisPrenom("Michel");
+//        michel.setVisAdresse("9 rue d'iraty");
+//        michel.setVisCp(64510);
+//        michel.setVisVille("Bordes");
+//        michel.setVisDateemb("10-mar-17");
+//
+//        Visiteur arnaud = new Visiteur();
+//        arnaud.setVisMat("arn64");
+//        arnaud.setVisNom("Ayrem");
+//        arnaud.setVisPrenom("Arnaud");
+//        arnaud.setVisAdresse("10 rue des lilas");
+//        arnaud.setVisCp(64000);
+//        arnaud.setVisVille("Pau");
+//        arnaud.setVisDateemb("10-jan-17");
+//
+//        Visiteur alison = new Visiteur();
+//        alison.setVisMat("ali64");
+//        alison.setVisNom("Bonnan");
+//        alison.setVisPrenom("Alison");
+//        alison.setVisAdresse("11 rue du poney");
+//        alison.setVisCp(64000);
+//        alison.setVisVille("Pau");
+//        alison.setVisDateemb("15-sep-17");
+//
+//        Visiteur flo = new Visiteur();
+//        flo.setVisMat("flo64");
+//        flo.setVisNom("Nunes");
+//        flo.setVisPrenom("Florence");
+//        flo.setVisAdresse("1 rue du stade");
+//        flo.setVisCp(64230);
+//        flo.setVisVille("Poey de Lescar");
+//        flo.setVisDateemb("20-nov-15");
+//
+//        Visiteur xavi = new Visiteur();
+//        xavi.setVisMat("xav64");
+//        xavi.setVisNom("Salaberria");
+//        xavi.setVisPrenom("Xavier");
+//        xavi.setVisAdresse(" 52 Rue Emile Guichenné");
+//        xavi.setVisCp(64000);
+//        xavi.setVisVille("Pau");
+//        xavi.setVisDateemb("25-oct-15");
+//
+//        visiteurDAO.insert(michel);
+//        visiteurDAO.insert(arnaud);
+//        visiteurDAO.insert(alison);
+//        visiteurDAO.insert(flo);
+//        visiteurDAO.insert(xavi);
 
-        Visiteur michel = new Visiteur();
-        michel.setVisMat("mic64");
-        michel.setVisNom("Pompas");
-        michel.setVisPrenom("Michel");
-        michel.setVisAdresse("9 rue d'iraty");
-        michel.setVisCp(64510);
-        michel.setVisVille("Bordes");
-        michel.setVisDateemb("10-mar-17");
-
-        Visiteur arnaud = new Visiteur();
-        michel.setVisMat("arn64");
-        michel.setVisNom("Ayrem");
-        michel.setVisPrenom("Arnaud");
-        michel.setVisAdresse("10 rue des lilas");
-        michel.setVisCp(64000);
-        michel.setVisVille("Pau");
-        michel.setVisDateemb("10-jan-17");
-
-        Visiteur alison = new Visiteur();
-        michel.setVisMat("ali64");
-        michel.setVisNom("Bonnan");
-        michel.setVisPrenom("Alison");
-        michel.setVisAdresse("11 rue du poney");
-        michel.setVisCp(64000);
-        michel.setVisVille("Pau");
-        michel.setVisDateemb("15-sep-17");
-
-        Visiteur flo = new Visiteur();
-        michel.setVisMat("flo64");
-        michel.setVisNom("Nunes");
-        michel.setVisPrenom("Florence");
-        michel.setVisAdresse("1 rue du stade");
-        michel.setVisCp(64230);
-        michel.setVisVille("Poey de Lescar");
-        michel.setVisDateemb("20-nov-15");
-
-        Visiteur xavi = new Visiteur();
-        michel.setVisMat("xav64");
-        michel.setVisNom("Salaberria");
-        michel.setVisPrenom("Xavier");
-        michel.setVisAdresse(" 52 Rue Emile Guichenné");
-        michel.setVisCp(64000);
-        michel.setVisVille("Pau");
-        michel.setVisDateemb("25-oct-15");
-
-        visiteurDAO.insert(michel);
-        visiteurDAO.insert(arnaud);
-        visiteurDAO.insert(alison);
-        visiteurDAO.insert(flo);
-        visiteurDAO.insert(xavi);
+        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(this.getApplicationContext()));
+        List<Visiteur> list = new ArrayList<>();
+        list.addAll(visiteurDAO.getVisiteurList());
+        Log.d("visiteur", list.toString());
     }
 
     @Override
