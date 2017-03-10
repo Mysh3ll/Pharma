@@ -3,7 +3,7 @@ package fr.btssio.pharma;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,14 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        VisiteurFragment.OnListFragmentInteractionListener {
 
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
@@ -163,7 +166,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_compte_rendu) {
             // Handle the camera action
         } else if (id == R.id.nav_visiteur) {
-
+            VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.constraintlayout_for_fragment,
+                    visiteurFragment,
+                    visiteurFragment.getTag()
+            ).commit();
         } else if (id == R.id.nav_praticien) {
 
         } else if (id == R.id.nav_medicament) {
@@ -175,5 +184,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(Visiteur item) {
+        Toast.makeText(getApplicationContext(), item.getVisMat(), Toast.LENGTH_LONG).show();
     }
 }
