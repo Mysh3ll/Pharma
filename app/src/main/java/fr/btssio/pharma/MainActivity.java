@@ -114,15 +114,15 @@ public class MainActivity extends AppCompatActivity
 //        Log.d("visiteur", list.toString());
 
         //Récupération du visiteur connecté
-        String vis_mat = getIntent().getExtras().getString("vis_mat");
-        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
-        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
-
-        tvVisiteurNom = (TextView) findViewById(R.id.tvVisiteurNom);
-        tvVisiteurPrenom = (TextView) findViewById(R.id.tvVisiteurPrenom);
-
-        tvVisiteurPrenom.setText(visiteur.getVisPrenom());
-        tvVisiteurNom.setText(visiteur.getVisNom());
+//        String vis_mat = getIntent().getExtras().getString("vis_mat");
+//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
+//
+//        tvVisiteurNom = (TextView) findViewById(R.id.tvVisiteurNom);
+//        tvVisiteurPrenom = (TextView) findViewById(R.id.tvVisiteurPrenom);
+//
+//        tvVisiteurPrenom.setText(visiteur.getVisPrenom());
+//        tvVisiteurNom.setText(visiteur.getVisNom());
     }
 
     @Override

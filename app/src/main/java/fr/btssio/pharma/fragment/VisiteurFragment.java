@@ -112,6 +112,6 @@ public class VisiteurFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Visiteur item);
+        void onListFragmentInteraction(Visiteur visiteur);
     }
 }

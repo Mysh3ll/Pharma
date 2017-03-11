@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class VisiteurRecyclerViewAdapter extends RecyclerView.Adapter<VisiteurRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Visiteur> mValues;
+    private final List<Visiteur> mVisiteurs;
     private final OnListFragmentInteractionListener mListener;
 
-    public VisiteurRecyclerViewAdapter(List<Visiteur> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public VisiteurRecyclerViewAdapter(List<Visiteur> visiteurs, OnListFragmentInteractionListener listener) {
+        mVisiteurs = visiteurs;
         mListener = listener;
     }
 
@@ -36,9 +36,9 @@ public class VisiteurRecyclerViewAdapter extends RecyclerView.Adapter<VisiteurRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getVisMat());
-        holder.mContentView.setText(mValues.get(position).getVisNom());
+        holder.mVisiteur = mVisiteurs.get(position);
+        holder.mVisiteurNomView.setText(mVisiteurs.get(position).getVisNom());
+        holder.mVisiteurPrenomView.setText(mVisiteurs.get(position).getVisPrenom());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class VisiteurRecyclerViewAdapter extends RecyclerView.Adapter<VisiteurRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mVisiteur);
                 }
             }
         });
@@ -54,25 +54,25 @@ public class VisiteurRecyclerViewAdapter extends RecyclerView.Adapter<VisiteurRe
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mVisiteurs.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Visiteur mItem;
+        public final TextView mVisiteurNomView;
+        public final TextView mVisiteurPrenomView;
+        public Visiteur mVisiteur;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mVisiteurNomView = (TextView) view.findViewById(R.id.tvVisiteurNom);
+            mVisiteurPrenomView = (TextView) view.findViewById(R.id.tvVisiteurPrenom);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mVisiteurPrenomView.getText() + "'";
         }
     }
 }
