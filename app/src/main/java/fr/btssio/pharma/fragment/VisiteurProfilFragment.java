@@ -81,8 +81,11 @@ public class VisiteurProfilFragment extends Fragment {
         TextView etVisiteurVille = (TextView) view.findViewById(R.id.etVisiteurVille);
 
         etVisiteurNom.setText(visiteur.getVisNom());
+        etVisiteurNom.setEnabled(false);
         etVisiteurPrenom.setText(visiteur.getVisPrenom());
+        etVisiteurPrenom.setEnabled(false);
         etVisiteurAdresse.setText(visiteur.getVisAdresse());
+        etVisiteurAdresse.requestFocus();
         etVisiteurCP.setText(visiteur.getVisCp().toString());
         etVisiteurVille.setText(visiteur.getVisVille());
 
