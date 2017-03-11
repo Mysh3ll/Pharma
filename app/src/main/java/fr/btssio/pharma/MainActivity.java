@@ -1,5 +1,6 @@
 package fr.btssio.pharma;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
+import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.PraticienDAO;
 import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
@@ -37,11 +39,12 @@ import static fr.btssio.pharma.orm.gen.PraticienDAO.PRA_NUM;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         VisiteurFragment.OnListFragmentInteractionListener,
-        PraticienFragment.OnListFragmentInteractionListener {
+        PraticienFragment.OnListFragmentInteractionListener, VisiteurProfilFragment.OnFragmentInteractionListener {
 
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
     boolean doubleBackToExitPressedOnce = false;
+    private String vis_mat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +131,6 @@ public class MainActivity extends AppCompatActivity
 //        list.addAll(visiteurDAO.getVisiteurList());
 //        Log.d("visiteur", list.toString());
 
-        //Récupération du visiteur connecté
-//        String vis_mat = getIntent().getExtras().getString("vis_mat");
-//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
-//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
 //
 //        tvVisiteurNom = (TextView) findViewById(R.id.tvVisiteurNom);
 //        tvVisiteurPrenom = (TextView) findViewById(R.id.tvVisiteurPrenom);
@@ -188,6 +187,12 @@ public class MainActivity extends AppCompatActivity
 //        List<Praticien> list = new ArrayList<>();
 //        list.addAll(praticienDAO.getPraticienList());
 //        Log.d("praticien", list.toString());
+
+
+        //Récupération du visiteur connecté
+        vis_mat = getIntent().getExtras().getString("vis_mat");
+//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
 
     }
 
@@ -267,7 +272,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_medicament) {
 
         } else if (id == R.id.nav_profil) {
-
+            VisiteurProfilFragment visiteurProfilFragment = VisiteurProfilFragment.newInstance(vis_mat);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
+                            R.id.constraintlayout_for_fragment,
+                            visiteurProfilFragment,
+                            visiteurProfilFragment.getTag()
+                    ).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -283,5 +296,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(Praticien praticien) {
         Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
     }
 }

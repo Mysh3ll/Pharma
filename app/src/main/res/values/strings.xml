@@ -14,4 +14,13 @@
     <string name="nav_medicament">Médicament</string>
     <string name="nav_profil">Mon profil</string>
     <string name="nav_header_title">Pharma</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="visiteurnom">Nom</string>
+    <string name="visiteurprenom">Prénom</string>
+    <string name="button_profil">Mettre à jour</string>
+    <string name="visiteuradresse">Adresse</string>
+    <string name="visiteurcp">Code Postal</string>
+    <string name="visiteurville">Ville</string>
 </resources>
