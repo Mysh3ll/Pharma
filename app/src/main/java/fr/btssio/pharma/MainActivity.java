@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,15 +17,26 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
+import fr.btssio.pharma.orm.gen.Praticien;
+import fr.btssio.pharma.orm.gen.PraticienDAO;
+import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
+import fr.btssio.pharma.orm.runtime.util.SimpleSQLiteOpenHelper;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
+
+import static fr.btssio.pharma.orm.gen.PraticienDAO.PRA_NUM;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        VisiteurFragment.OnListFragmentInteractionListener {
+        VisiteurFragment.OnListFragmentInteractionListener,
+        PraticienFragment.OnListFragmentInteractionListener {
 
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
@@ -54,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //---------------------- INSERT VISITEUR ------------------------------------//
 //        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
 //        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(helper);
 //
@@ -123,6 +136,57 @@ public class MainActivity extends AppCompatActivity
 //
 //        tvVisiteurPrenom.setText(visiteur.getVisPrenom());
 //        tvVisiteurNom.setText(visiteur.getVisNom());
+
+        //---------------------- INSERT PRATICIEN ------------------------------------//
+//        Praticien praticien1 = new Praticien(1,"Notini","Alain","114 r Authie",85000,"LA ROCHE SUR YON", (float) 290.03);
+//        Praticien praticien2 = new Praticien(2, "Gosselin", "Albert", "13 r Devon", 41000, "BLOIS",(float) 307.49);
+//        Praticien praticien3 = new Praticien(3, "Delahaye", "André", "36 av 6 Juin",25000, "BESANCON", (float) 185.79);
+//        Praticien praticien4 = new Praticien(4, "Leroux", "André", "47 av Robert Schuman",60000, "BEAUVAIS", (float) 172.04);
+//        Praticien praticien5 = new Praticien(5, "Desmoulins", "Anne", "31 r St Jean",30000, "NIMES", (float) 94.75);
+//        Praticien praticien6 = new Praticien(6, "Mouel", "Anne", "27 r Auvergne",80000, "AMIENS", (float) 45.2);
+//        Praticien praticien7 = new Praticien(7, "Desgranges-Lentz", "Antoine", "1 r Albert de Mun",29000, "MORLAIX", (float) 20.07);
+//        Praticien praticien8 = new Praticien(8, "Marcouiller", "Arnaud", "31 r St Jean",68000, "MULHOUSE", (float) 396.52);
+//        Praticien praticien9 = new Praticien(9, "Dupuy", "Benoit", "9 r Demolombe",34000, "MONTPELLIER", (float) 395.66);
+//        Praticien praticien10 = new Praticien(10, "Lerat", "Bernard", "31 r St Jean",59000, "LILLE", (float) 257.79);
+//        Praticien praticien11 = new Praticien(11, "Marçais-Lefebvre", "Bertrand", "86Bis r Basse",67000, "STRASBOURG", (float) 450.96);
+//        Praticien praticien12 = new Praticien(12, "Boscher", "Bruno", "94 r Falaise",10000, "TROYES", (float) 356.14);
+//        Praticien praticien13 = new Praticien(13, "Morel", "Catherine", "21 r Chateaubriand",75000, "PARIS", (float) 379.57);
+//        Praticien praticien14 = new Praticien(14, "Guivarch", "Chantal", "4 av Gén Laperrine",45000, "ORLEANS", (float) 114.56);
+//        Praticien praticien15 = new Praticien(15, "Bessin-Grosdoit", "Christophe", "92 r Falaise",6000, "NICE", (float) 222.06);
+//        Praticien praticien16 = new Praticien(16, "Rossa", "Claire", "14 av Thiès",6000, "NICE", (float) 529.78);
+//        Praticien praticien17 = new Praticien(17, "Cauchy", "Denis", "5 av Ste Thérèse",11000, "NARBONNE", (float) 458.82);
+//        Praticien praticien18 = new Praticien(18, "Gaffé", "Dominique", "9 av 1ère Armée Française",35000, "RENNES", (float) 213.4);
+//        Praticien praticien19 = new Praticien(19, "Guenon", "Dominique", "98 bd Mar Lyautey",44000, "NANTES", (float) 175.89);
+//        Praticien praticien20 = new Praticien(20, "Prévot", "Dominique", "29 r Lucien Nelle",87000, "LIMOGES", (float) 151.36);
+//
+//        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
+//        PraticienDAO praticienDAO = new PraticienDAOImpl(helper);
+//
+//        praticienDAO.insert(praticien1);
+//        praticienDAO.insert(praticien2);
+//        praticienDAO.insert(praticien3);
+//        praticienDAO.insert(praticien4);
+//        praticienDAO.insert(praticien5);
+//        praticienDAO.insert(praticien6);
+//        praticienDAO.insert(praticien7);
+//        praticienDAO.insert(praticien8);
+//        praticienDAO.insert(praticien9);
+//        praticienDAO.insert(praticien10);
+//        praticienDAO.insert(praticien11);
+//        praticienDAO.insert(praticien12);
+//        praticienDAO.insert(praticien13);
+//        praticienDAO.insert(praticien14);
+//        praticienDAO.insert(praticien15);
+//        praticienDAO.insert(praticien16);
+//        praticienDAO.insert(praticien17);
+//        praticienDAO.insert(praticien18);
+//        praticienDAO.insert(praticien19);
+//        praticienDAO.insert(praticien20);
+//        PraticienDAO praticienDAO = new PraticienDAOImpl(new PharmaSQLiteOpenHelper(this.getApplicationContext()));
+//        List<Praticien> list = new ArrayList<>();
+//        list.addAll(praticienDAO.getPraticienList());
+//        Log.d("praticien", list.toString());
+
     }
 
     @Override
@@ -174,7 +238,13 @@ public class MainActivity extends AppCompatActivity
                     visiteurFragment.getTag()
             ).commit();
         } else if (id == R.id.nav_praticien) {
-
+            PraticienFragment praticienFragment = PraticienFragment.newInstance(1);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(
+                    R.id.constraintlayout_for_fragment,
+                    praticienFragment,
+                    praticienFragment.getTag()
+            ).commit();
         } else if (id == R.id.nav_medicament) {
 
         } else if (id == R.id.nav_profil) {
@@ -187,7 +257,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Visiteur item) {
-        Toast.makeText(getApplicationContext(), item.getVisMat(), Toast.LENGTH_LONG).show();
+    public void onListFragmentInteraction(Visiteur visiteur) {
+        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Praticien praticien) {
+        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
     }
 }
