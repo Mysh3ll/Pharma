@@ -4,10 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fr.btssio.pharma.R;
 import fr.btssio.pharma.orm.gen.Visiteur;
@@ -32,6 +35,8 @@ public class VisiteurProfilFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private VisiteurDAO visiteurDAO;
     private Visiteur visiteur;
+
+    private TextView etVisiteurNom, etVisiteurPrenom, etVisiteurAdresse, etVisiteurCP, etVisiteurVille;
 
     public VisiteurProfilFragment() {
         // Required empty public constructor
@@ -74,11 +79,11 @@ public class VisiteurProfilFragment extends Fragment {
         View view = layoutInflater.inflate(R.layout.fragment_visiteur_profil, container, false);
 
         //Autocomplétion des champs
-        TextView etVisiteurNom = (TextView) view.findViewById(R.id.etVisiteurNom);
-        TextView etVisiteurPrenom = (TextView) view.findViewById(R.id.etVisiteurPrenom);
-        TextView etVisiteurAdresse = (TextView) view.findViewById(R.id.etVisiteurAdresse);
-        TextView etVisiteurCP = (TextView) view.findViewById(R.id.etVisiteurCP);
-        TextView etVisiteurVille = (TextView) view.findViewById(R.id.etVisiteurVille);
+        etVisiteurNom = (TextView) view.findViewById(R.id.etVisiteurNom);
+        etVisiteurPrenom = (TextView) view.findViewById(R.id.etVisiteurPrenom);
+        etVisiteurAdresse = (TextView) view.findViewById(R.id.etVisiteurAdresse);
+        etVisiteurCP = (TextView) view.findViewById(R.id.etVisiteurCP);
+        etVisiteurVille = (TextView) view.findViewById(R.id.etVisiteurVille);
 
         etVisiteurNom.setText(visiteur.getVisNom());
         etVisiteurNom.setEnabled(false);
@@ -88,6 +93,40 @@ public class VisiteurProfilFragment extends Fragment {
         etVisiteurAdresse.requestFocus();
         etVisiteurCP.setText(visiteur.getVisCp().toString());
         etVisiteurVille.setText(visiteur.getVisVille());
+
+        //Affichage du boutton "mise à jour"
+        Button btnProfil = (Button) view.findViewById(R.id.btnProfil);
+        btnProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Contrôle des champs saisis
+                boolean error = false;
+
+                if (TextUtils.isEmpty(getVisiteurAdresse())) {
+                    error = true;
+                    Toast.makeText(getContext(), "Veuillez renter une adresse.", Toast.LENGTH_LONG).show();
+                    etVisiteurAdresse.requestFocus();
+                } else if (TextUtils.isEmpty(getVisiteurCP())) {
+                    error = true;
+                    Toast.makeText(getContext(), "Veuillez renter un code postal.", Toast.LENGTH_LONG).show();
+                    etVisiteurCP.requestFocus();
+                } else if (TextUtils.isEmpty(getVisiteurVille())) {
+                    error = true;
+                    Toast.makeText(getContext(), "Veuillez renter une ville.", Toast.LENGTH_LONG).show();
+                    etVisiteurVille.requestFocus();
+                }
+
+                if (!error) {
+                    //Update du visiteur en BDD
+                    visiteur.setVisAdresse(getVisiteurAdresse());
+                    visiteur.setVisCp(Integer.valueOf(getVisiteurCP()));
+                    visiteur.setVisVille(getVisiteurVille());
+                    visiteurDAO.update(visiteur);
+                    Toast.makeText(getContext(), "Mise à jour effectuée avec succès.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
         return view;
     }
@@ -130,4 +169,17 @@ public class VisiteurProfilFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private String getVisiteurAdresse() {
+        return etVisiteurAdresse.getText().toString().trim();
+    }
+
+    private String getVisiteurCP() {
+        return etVisiteurCP.getText().toString().trim();
+    }
+
+    private String getVisiteurVille() {
+        return etVisiteurVille.getText().toString().trim();
+    }
+
 }
