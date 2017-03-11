@@ -16,6 +16,7 @@ import fr.btssio.pharma.R;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.PraticienDAO;
 import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
+import fr.btssio.pharma.orm.runtime.query.OrderByDirection;
 import fr.btssio.pharma.recyclerview.PraticienRecyclerViewAdapter;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
@@ -74,9 +75,9 @@ public class PraticienFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            //Vérification du visiteur en BDD
+            //Récupération des praticiens en BDD
             praticienDAO = new PraticienDAOImpl(new PharmaSQLiteOpenHelper(this.getContext()));
-            List<Praticien> praticiens = praticienDAO.getPraticienList();
+            List<Praticien> praticiens = praticienDAO.getPraticienList(PraticienDAO.PRA_NOM, OrderByDirection.ASC);
             recyclerView.setAdapter(new PraticienRecyclerViewAdapter(praticiens, mListener));
         }
         return view;

@@ -1,6 +1,7 @@
 package fr.btssio.pharma;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
 
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +197,20 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Appuyer deux fois pour quitter", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
@@ -232,7 +247,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_visiteur) {
             VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
                     R.id.constraintlayout_for_fragment,
                     visiteurFragment,
                     visiteurFragment.getTag()
@@ -240,7 +257,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_praticien) {
             PraticienFragment praticienFragment = PraticienFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
                     R.id.constraintlayout_for_fragment,
                     praticienFragment,
                     praticienFragment.getTag()

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import fr.btssio.pharma.R;
+import fr.btssio.pharma.orm.runtime.query.OrderByDirection;
 import fr.btssio.pharma.recyclerview.VisiteurRecyclerViewAdapter;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
@@ -74,9 +75,9 @@ public class VisiteurFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            //Vérification du visiteur en BDD
+            //Récupération des visiteurs en BDD
             visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(this.getContext()));
-            List<Visiteur> visiteurs = visiteurDAO.getVisiteurList();
+            List<Visiteur> visiteurs = visiteurDAO.getVisiteurList(VisiteurDAO.VIS_NOM, OrderByDirection.ASC);
             recyclerView.setAdapter(new VisiteurRecyclerViewAdapter(visiteurs, mListener));
         }
         return view;
