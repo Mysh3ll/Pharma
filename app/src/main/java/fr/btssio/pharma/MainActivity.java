@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,13 +19,21 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
+import fr.btssio.pharma.orm.gen.Famille;
+import fr.btssio.pharma.orm.gen.FamilleDAO;
+import fr.btssio.pharma.orm.gen.FamilleDAOImpl;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
+import fr.btssio.pharma.orm.runtime.util.SimpleSQLiteOpenHelper;
+import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -60,6 +69,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+//        insertDataToDatabase();
 
         //Load fragment_main
         MainFragment mainFragment = new MainFragment();
@@ -302,5 +313,56 @@ public class MainActivity extends AppCompatActivity
 //        List<Praticien> list = new ArrayList<>();
 //        list.addAll(praticienDAO.getPraticienList());
 //        Log.d("praticien", list.toString());
+
+        //--------------- INSERT FAMILLE ---------------------------//
+
+//        Famille famille1 = new Famille("AA", "Antalgiques en association");
+//        Famille famille2 = new Famille("AAA", "Antalgiques antipyrétiques en association");
+//        Famille famille3 = new Famille("AAC", "Antidépresseur d'action centrale");
+//        Famille famille4 = new Famille("AAH", "Antivertigineux antihistaminique H1");
+//        Famille famille5 = new Famille("ABA", "Antibiotique antituberculeux");
+//        Famille famille6 = new Famille("ABC", "Antibiotique antiacnéique local");
+//        Famille famille7 = new Famille("ABP", "Antibiotique de la famille des béta-lactamines (pénicilline A)");
+//        Famille famille8 = new Famille("AFC", "Antibiotique de la famille des cyclines");
+//        Famille famille9 = new Famille("AFM", "Antibiotique de la famille des macrolides");
+//        Famille famille10 = new Famille("AH", "Antihistaminique H1 local");
+//        Famille famille11 = new Famille("AIM", "Antidépresseur imipraminique (tricyclique)");
+//        Famille famille12 = new Famille("AIN", "Antidépresseur inhibiteur sélectif de la recapture de la sérotonine");
+//        Famille famille13 = new Famille("ALO", "Antibiotique local (ORL)");
+//        Famille famille14 = new Famille("ANS", "Antidépresseur IMAO non sélectif");
+//        Famille famille15 = new Famille("AO", "Antibiotique ophtalmique");
+//        Famille famille16 = new Famille("AP", "Antipsychotique normothymique");
+//        Famille famille17 = new Famille("AUM", "Antibiotique urinaire minute");
+//        Famille famille18 = new Famille("CRT", "Corticoïde, antibiotique et antifongique à  usage local");
+//        Famille famille19 = new Famille("HYP", "Hypnotique antihistaminique");
+//        Famille famille20 = new Famille("PSA", "Psychostimulant, antiasthénique");
+//
+//        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
+//        FamilleDAO familleDAO = new FamilleDAOImpl(helper);
+//
+//        familleDAO.insert(famille1);
+//        familleDAO.insert(famille2);
+//        familleDAO.insert(famille3);
+//        familleDAO.insert(famille4);
+//        familleDAO.insert(famille5);
+//        familleDAO.insert(famille6);
+//        familleDAO.insert(famille7);
+//        familleDAO.insert(famille8);
+//        familleDAO.insert(famille9);
+//        familleDAO.insert(famille10);
+//        familleDAO.insert(famille11);
+//        familleDAO.insert(famille12);
+//        familleDAO.insert(famille13);
+//        familleDAO.insert(famille14);
+//        familleDAO.insert(famille15);
+//        familleDAO.insert(famille16);
+//        familleDAO.insert(famille17);
+//        familleDAO.insert(famille18);
+//        familleDAO.insert(famille19);
+//        familleDAO.insert(famille20);
+//        List<Famille> list = new ArrayList<>();
+//        list.addAll(familleDAO.getFamilleList());
+//        Log.d("famille", list.toString());
+
     }
 }
