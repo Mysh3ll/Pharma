@@ -30,20 +30,20 @@
                 android:id="@+id/tvPraticienNom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:textSize="16sp"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPraticienPrenom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:textSize="10sp" />
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>
