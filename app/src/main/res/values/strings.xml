@@ -23,4 +23,6 @@
     <string name="visiteuradresse">Adresse</string>
     <string name="visiteurcp">Code Postal</string>
     <string name="visiteurville">Ville</string>
+    <string name="maintitle">PHARMA</string>
+    <string name="btnnewrapport">Nouveau rapport</string>
 </resources>

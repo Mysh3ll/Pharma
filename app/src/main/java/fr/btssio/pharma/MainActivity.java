@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,22 +18,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Praticien;
-import fr.btssio.pharma.orm.gen.PraticienDAO;
-import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
-import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
-import fr.btssio.pharma.orm.runtime.util.SimpleSQLiteOpenHelper;
-import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
-
-import static fr.btssio.pharma.orm.gen.PraticienDAO.PRA_NUM;
+import fr.btssio.pharma.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -71,6 +61,131 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Load fragment_main
+        MainFragment mainFragment = new MainFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        mainFragment,
+                        mainFragment.getTag()
+                ).commit();
+
+        //Récupération du visiteur connecté
+        vis_mat = getIntent().getExtras().getString("vis_mat");
+//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Appuyer deux fois pour quitter", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_compte_rendu) {
+            // Handle the camera action
+        } else if (id == R.id.nav_visiteur) {
+            VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
+                    R.id.constraintlayout_for_fragment,
+                    visiteurFragment,
+                    visiteurFragment.getTag()
+            ).commit();
+        } else if (id == R.id.nav_praticien) {
+            PraticienFragment praticienFragment = PraticienFragment.newInstance(1);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
+                    R.id.constraintlayout_for_fragment,
+                    praticienFragment,
+                    praticienFragment.getTag()
+            ).commit();
+        } else if (id == R.id.nav_medicament) {
+
+        } else if (id == R.id.nav_profil) {
+            VisiteurProfilFragment visiteurProfilFragment = VisiteurProfilFragment.newInstance(vis_mat);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
+                            R.id.constraintlayout_for_fragment,
+                            visiteurProfilFragment,
+                            visiteurProfilFragment.getTag()
+                    ).commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(Visiteur visiteur) {
+        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Praticien praticien) {
+        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    private void insertDataToDatabase() {
         //---------------------- INSERT VISITEUR ------------------------------------//
 //        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
 //        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(helper);
@@ -187,119 +302,5 @@ public class MainActivity extends AppCompatActivity
 //        List<Praticien> list = new ArrayList<>();
 //        list.addAll(praticienDAO.getPraticienList());
 //        Log.d("praticien", list.toString());
-
-
-        //Récupération du visiteur connecté
-        vis_mat = getIntent().getExtras().getString("vis_mat");
-//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
-//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
-            }
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Appuyer deux fois pour quitter", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce=false;
-                }
-            }, 2000);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_compte_rendu) {
-            // Handle the camera action
-        } else if (id == R.id.nav_visiteur) {
-            VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction()
-                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .replace(
-                    R.id.constraintlayout_for_fragment,
-                    visiteurFragment,
-                    visiteurFragment.getTag()
-            ).commit();
-        } else if (id == R.id.nav_praticien) {
-            PraticienFragment praticienFragment = PraticienFragment.newInstance(1);
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction()
-                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .replace(
-                    R.id.constraintlayout_for_fragment,
-                    praticienFragment,
-                    praticienFragment.getTag()
-            ).commit();
-        } else if (id == R.id.nav_medicament) {
-
-        } else if (id == R.id.nav_profil) {
-            VisiteurProfilFragment visiteurProfilFragment = VisiteurProfilFragment.newInstance(vis_mat);
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction()
-                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .replace(
-                            R.id.constraintlayout_for_fragment,
-                            visiteurProfilFragment,
-                            visiteurProfilFragment.getTag()
-                    ).commit();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onListFragmentInteraction(Visiteur visiteur) {
-        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onListFragmentInteraction(Praticien praticien) {
-        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-        Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
     }
 }
