@@ -23,12 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.btssio.pharma.fragment.FamilleFragment;
+import fr.btssio.pharma.fragment.MedicamentFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Famille;
 import fr.btssio.pharma.orm.gen.FamilleDAO;
 import fr.btssio.pharma.orm.gen.FamilleDAOImpl;
+import fr.btssio.pharma.orm.gen.Medicament;
+import fr.btssio.pharma.orm.gen.MedicamentDAO;
+import fr.btssio.pharma.orm.gen.MedicamentDAOImpl;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
@@ -41,8 +45,10 @@ public class MainActivity extends AppCompatActivity
         VisiteurFragment.OnListFragmentInteractionListener,
         PraticienFragment.OnListFragmentInteractionListener,
         VisiteurProfilFragment.OnFragmentInteractionListener,
-        FamilleFragment.OnListFragmentInteractionListener{
+        FamilleFragment.OnListFragmentInteractionListener,
+        MedicamentFragment.OnListFragmentInteractionListener {
 
+    private static final String FAM_CODE = "fam_code";
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
     boolean doubleBackToExitPressedOnce = false;
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        insertDataToDatabase();
+        insertDataToDatabase();
 
         //Load fragment_main
         MainFragment mainFragment = new MainFragment();
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -151,20 +158,20 @@ public class MainActivity extends AppCompatActivity
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
                     .replace(
-                    R.id.constraintlayout_for_fragment,
-                    visiteurFragment,
-                    visiteurFragment.getTag()
-            ).commit();
+                            R.id.constraintlayout_for_fragment,
+                            visiteurFragment,
+                            visiteurFragment.getTag()
+                    ).commit();
         } else if (id == R.id.nav_praticien) {
             PraticienFragment praticienFragment = PraticienFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
                     .replace(
-                    R.id.constraintlayout_for_fragment,
-                    praticienFragment,
-                    praticienFragment.getTag()
-            ).commit();
+                            R.id.constraintlayout_for_fragment,
+                            praticienFragment,
+                            praticienFragment.getTag()
+                    ).commit();
         } else if (id == R.id.nav_medicament) {
             FamilleFragment familleFragment = FamilleFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();
@@ -187,6 +194,9 @@ public class MainActivity extends AppCompatActivity
                     ).commit();
         }
 
+        // Set action bar title
+        setTitle(item.getTitle());
+        // Close the navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -205,6 +215,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
         Toast.makeText(getApplicationContext(), uri.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Famille famille) {
+        MedicamentFragment medicamentFragment = MedicamentFragment.newInstance(1, famille.getFamCode());
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        medicamentFragment,
+                        medicamentFragment.getTag()
+                ).commit();
+//        Toast.makeText(getApplicationContext(), famille.getFamCode().toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Medicament medicament) {
+        Toast.makeText(getApplicationContext(), medicament.getMedDepotlegal(), Toast.LENGTH_LONG).show();
     }
 
     private void insertDataToDatabase() {
@@ -375,10 +404,71 @@ public class MainActivity extends AppCompatActivity
 //        list.addAll(familleDAO.getFamilleList());
 //        Log.d("famille", list.toString());
 
-    }
+        //----------------------- INSERT MEDICAMENT -----------------------//
 
-    @Override
-    public void onListFragmentInteraction(Famille famille) {
-        Toast.makeText(getApplicationContext(), famille.getFamCode().toString(), Toast.LENGTH_LONG).show();
+//        Medicament medicament1 = new Medicament("3MYC7"     ,"TRIMYCINE"            ,"Triamcinolone (acétonide) + Néomycine + Nystatine","Ce médicament est un corticoïde à  activité forte ou très forte associé à  un antibiotique et un antifongique, utilisé en application locale dans certaines atteintes cutanées surinfectées.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants, d\"infections de la peau ou de parasitisme non traités, d\"acné. Ne pas appliquer sur une plaie, ni sous un pansement occlusif.","CRT");
+//        Medicament medicament2 = new Medicament("ADIMOL9"   ,"ADIMOL"               ,"Amoxicilline + Acide clavulanique","Ce médicament, plus puissant que les pénicillines simples, est utilisé pour traiter des infections bactériennes spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie aux pénicillines ou aux céphalosporines.","ABP");
+//        Medicament medicament3 = new Medicament("AMOPIL7"   ,"AMOPIL"               ,"Amoxicilline","Ce médicament, plus puissant que les pénicillines simples, est utilisé pour traiter des infections bactériennes spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie aux pénicillines. Il doit être administré avec prudence en cas d\"allergie aux céphalosporines.","ABP");
+//        Medicament medicament4 = new Medicament("AMOX45"    ,"AMOXAR"               ,"Amoxicilline","Ce médicament, plus puissant que les pénicillines simples, est utilisé pour traiter des infections bactériennes spécifiques.","La prise de ce médicament peut rendre positifs les tests de dépistage du dopage.","ABP");
+//        Medicament medicament5 = new Medicament("AMOXIG12"  ,"AMOXI Gé"             ,"Amoxicilline","Ce médicament, plus puissant que les pénicillines simples, est utilisé pour traiter des infections bactériennes spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie aux pénicillines. Il doit être administré avec prudence en cas d\"allergie aux céphalosporines.","ABP");
+//        Medicament medicament6 = new Medicament("APATOUX22" ,"APATOUX Vitamine C"   ,"Tyrothricine + Tétracaïne + Acide ascorbique (Vitamine C)","Ce médicament est utilisé pour traiter les affections de la bouche et de la gorge.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants, en cas de phénylcétonurie et chez l\"enfant de moins de 6 ans.","ALO");
+//        Medicament medicament7 = new Medicament("BACTIG10"  ,"BACTIGEL"             ,"Erythromycine","Ce médicament est utilisé en application locale pour traiter l\"acné et les infections cutanées bactériennes associées.","Ce médicament est contre-indiqué en cas d\"allergie aux antibiotiques de la famille des macrolides ou des lincosanides.","ABC");
+//        Medicament medicament8 = new Medicament("BACTIV13"  ,"BACTIVIL"             ,"Erythromycine","Ce médicament est utilisé pour traiter des infections bactériennes spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie aux macrolides (dont le chef de file est l\"érythromycine).","AFM");
+//        Medicament medicament9 = new Medicament("BITALV"    ,"BIVALIC"              ,"Dextropropoxyphène + Paracétamol","Ce médicament est utilisé pour traiter les douleurs d\"intensité modérée ou intense.","Ce médicament est contre-indiqué en cas d\"allergie aux médicaments de cette famille, d\"insuffisance hépatique ou d\"insuffisance rénale.","AAA");
+//        Medicament medicament10 = new Medicament("CARTION6" ,"CARTION"              ,"Acide acétylsalicylique (aspirine) + Acide ascorbique (Vitamine C) + Paracétamol","Ce médicament est utilisé dans le traitement symptomatique de la douleur ou de la fièvre.","Ce médicament est contre-indiqué en cas de troubles de la coagulation (tendances aux hémorragies), d\"ulcère gastroduodénal, maladies graves du foie.","AAA");
+//        Medicament medicament11 = new Medicament("CLAZER6"  ,"CLAZER"               ,"Clarithromycine","Ce médicament est utilisé pour traiter des infections bactériennes spécifiques. Il est également utilisé dans le traitement de l\"ulcère gastro-duodénal, en association avec d\"autres médicaments.","Ce médicament est contre-indiqué en cas d\"allergie aux macrolides (dont le chef de file est l\"érythromycine).","AFM");
+//        Medicament medicament12 = new Medicament("DEPRIL9"  ,"DEPRAMIL"             ,"Clomipramine","Ce médicament est utilisé pour traiter les épisodes dépressifs sévères, certaines douleurs rebelles, les troubles obsessionnels compulsifs et certaines énurésies chez l\"enfant.","Ce médicament est contre-indiqué en cas de glaucome ou d\"adénome de la prostate, d\"infarctus récent, ou si vous avez reà§u un traitement par IMAO durant les 2 semaines précédentes ou en cas d\"allergie aux antidépresseurs imipraminiques.","AIM");
+//        Medicament medicament13 = new Medicament("DIMIRTAM6","DIMIRTAM"             ,"Mirtazapine","Ce médicament est utilisé pour traiter les épisodes dépressifs sévères.","La prise de ce produit est contre-indiquée en cas de d\"allergie à  l\"un des constituants.","AAC");
+//        Medicament medicament14 = new Medicament("DOLRIL7"  ,"DOLORIL"              ,"Acide acétylsalicylique (aspirine) + Acide ascorbique (Vitamine C) + Paracétamol","Ce médicament est utilisé dans le traitement symptomatique de la douleur ou de la fièvre.","Ce médicament est contre-indiqué en cas d\"allergie au paracétamol ou aux salicylates.","AAA");
+//        Medicament medicament15 = new Medicament("DORNOM8"  ,"NORMADOR"             ,"Doxylamine","Ce médicament est utilisé pour traiter l\"insomnie chez l\"adulte.","Ce médicament est contre-indiqué en cas de glaucome, de certains troubles urinaires (rétention urinaire) et chez l\"enfant de moins de 15 ans.","HYP");
+//        Medicament medicament16 = new Medicament("EQUILARX6","EQUILAR"              ,"Méclozine","Ce médicament est utilisé pour traiter les vertiges et pour prévenir le mal des transports.","Ce médicament ne doit pas être utilisé en cas d\"allergie au produit, en cas de glaucome ou de rétention urinaire.","AAH");
+//        Medicament medicament17 = new Medicament("EVILR7"   ,"EVEILLOR"             ,"Adrafinil","Ce médicament est utilisé pour traiter les troubles de la vigilance et certains symptomes neurologiques chez le sujet agé.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants.","PSA");
+//        Medicament medicament18 = new Medicament("INSXT5"   ,"INSECTIL"             ,"Diphénydramine","Ce médicament est utilisé en application locale sur les piqûres d\"insecte et l\"urticaire.","Ce médicament est contre-indiqué en cas d\"allergie aux antihistaminiques.","AH" );
+//        Medicament medicament19 = new Medicament("JOVAI8"   ,"JOVENIL"              ,"Josamycine","Ce médicament est utilisé pour traiter des infections bactériennes spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie aux macrolides (dont le chef de file est l\"érythromycine).","AFM");
+//        Medicament medicament20 = new Medicament("LIDOXY23" ,"LIDOXYTRACINE"        ,"Oxytétracycline +Lidocaïne","Ce médicament est utilisé en injection intramusculaire pour traiter certaines infections spécifiques.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants. Il ne doit pas être associé aux rétinoïdes.","AFC");
+//        Medicament medicament21 = new Medicament("LITHOR12" ,"LITHORINE"            ,"Lithium","Ce médicament est indiqué dans la prévention des psychoses maniaco-dépressives ou pour traiter les états maniaques.","Ce médicament ne doit pas être utilisé si vous êtes allergique au lithium. Avant de prendre ce traitement, signalez à  votre médecin traitant si vous souffrez d\"insuffisance rénale, ou si vous avez un régime sans sel.","AP" );
+//        Medicament medicament22 = new Medicament("PARMOL16" ,"PARMOCODEINE"         ,"Codéine + Paracétamol","Ce médicament est utilisé pour le traitement des douleurs lorsque des antalgiques simples ne sont pas assez efficaces.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants, chez l\"enfant de moins de 15 Kg, en cas d\"insuffisance hépatique ou respiratoire, d\"asthme, de phénylcétonurie et chez la femme qui allaite.","AA" );
+//        Medicament medicament23 = new Medicament("PHYSOI8"  ,"PHYSICOR"             ,"Sulbutiamine","Ce médicament est utilisé pour traiter les baisses d\"activité physique ou psychique, souvent dans un contexte de dépression.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants.","PSA");
+//        Medicament medicament24 = new Medicament("PIRIZ8"   ,"PIRIZAN"              ,"Pyrazinamide","Ce médicament est utilisé, en association à  d\"autres antibiotiques, pour traiter la tuberculose.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants, d\"insuffisance rénale ou hépatique, d\"hyperuricémie ou de porphyrie.","ABA");
+//        Medicament medicament25 = new Medicament("POMDI20"  ,"POMADINE"             ,"Bacitracine","Ce médicament est utilisé pour traiter les infections oculaires de la surface de l\"oeil.","Ce médicament est contre-indiqué en cas d\"allergie aux antibiotiques appliqués localement.","AO" );
+//        Medicament medicament26 = new Medicament("TROXT21"  ,"TROXADET"             ,"Paroxétine","Ce médicament est utilisé pour traiter la dépression et les troubles obsessionnels compulsifs. Il peut également être utilisé en prévention des crises de panique avec ou sans agoraphobie.","Ce médicament est contre-indiqué en cas d\"allergie au produit.","AIN");
+//        Medicament medicament27 = new Medicament("TXISOL22" ,"TOUXISOL Vitamine C"  ,"Tyrothricine + Acide ascorbique (Vitamine C)","Ce médicament est utilisé pour traiter les affections de la bouche et de la gorge.","Ce médicament est contre-indiqué en cas d\"allergie à  l\"un des constituants et chez l\"enfant de moins de 6 ans.","ALO");
+//        Medicament medicament28 = new Medicament("URIEG6"   ,"URIREGUL"             ,"Fosfomycine trométamol","Ce médicament est utilisé pour traiter les infections urinaires simples chez la femme de moins de 65 ans.","La prise de ce médicament est contre-indiquée en cas d\"allergie à  l\"un des constituants et d\"insuffisance rénale.","AUM");
+//
+//        SimpleSQLiteOpenHelper helper = new PharmaSQLiteOpenHelper(this.getApplicationContext());
+//        MedicamentDAO medicamentDAO = new MedicamentDAOImpl(helper);
+//
+//        medicamentDAO.insert(medicament1);
+//        medicamentDAO.insert(medicament2);
+//        medicamentDAO.insert(medicament3);
+//        medicamentDAO.insert(medicament4);
+//        medicamentDAO.insert(medicament5);
+//        medicamentDAO.insert(medicament6);
+//        medicamentDAO.insert(medicament7);
+//        medicamentDAO.insert(medicament8);
+//        medicamentDAO.insert(medicament9);
+//        medicamentDAO.insert(medicament10);
+//        medicamentDAO.insert(medicament11);
+//        medicamentDAO.insert(medicament12);
+//        medicamentDAO.insert(medicament13);
+//        medicamentDAO.insert(medicament14);
+//        medicamentDAO.insert(medicament15);
+//        medicamentDAO.insert(medicament16);
+//        medicamentDAO.insert(medicament17);
+//        medicamentDAO.insert(medicament18);
+//        medicamentDAO.insert(medicament19);
+//        medicamentDAO.insert(medicament20);
+//        medicamentDAO.insert(medicament21);
+//        medicamentDAO.insert(medicament22);
+//        medicamentDAO.insert(medicament23);
+//        medicamentDAO.insert(medicament24);
+//        medicamentDAO.insert(medicament25);
+//        medicamentDAO.insert(medicament26);
+//        medicamentDAO.insert(medicament27);
+//        medicamentDAO.insert(medicament28);
+//        List<Medicament> list = new ArrayList<>();
+//        list.addAll(medicamentDAO.getMedicamentList());
+//        Log.d("medicament", list.toString());
+
     }
 }
