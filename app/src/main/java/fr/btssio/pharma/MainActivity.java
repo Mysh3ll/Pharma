@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.btssio.pharma.fragment.FamilleFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
@@ -38,7 +39,9 @@ import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         VisiteurFragment.OnListFragmentInteractionListener,
-        PraticienFragment.OnListFragmentInteractionListener, VisiteurProfilFragment.OnFragmentInteractionListener {
+        PraticienFragment.OnListFragmentInteractionListener,
+        VisiteurProfilFragment.OnFragmentInteractionListener,
+        FamilleFragment.OnListFragmentInteractionListener{
 
     private VisiteurDAO visiteurDAO;
     private TextView tvVisiteurNom, tvVisiteurPrenom;
@@ -163,7 +166,15 @@ public class MainActivity extends AppCompatActivity
                     praticienFragment.getTag()
             ).commit();
         } else if (id == R.id.nav_medicament) {
-
+            FamilleFragment familleFragment = FamilleFragment.newInstance(1);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .replace(
+                            R.id.constraintlayout_for_fragment,
+                            familleFragment,
+                            familleFragment.getTag()
+                    ).commit();
         } else if (id == R.id.nav_profil) {
             VisiteurProfilFragment visiteurProfilFragment = VisiteurProfilFragment.newInstance(vis_mat);
             FragmentManager manager = getSupportFragmentManager();
@@ -364,5 +375,10 @@ public class MainActivity extends AppCompatActivity
 //        list.addAll(familleDAO.getFamilleList());
 //        Log.d("famille", list.toString());
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(Famille famille) {
+        Toast.makeText(getApplicationContext(), famille.getFamCode().toString(), Toast.LENGTH_LONG).show();
     }
 }
