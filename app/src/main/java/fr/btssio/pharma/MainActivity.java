@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.btssio.pharma.fragment.FamilleFragment;
+import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
 import fr.btssio.pharma.fragment.MedicamentFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
@@ -245,7 +246,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Medicament medicament) {
-        Toast.makeText(getApplicationContext(), medicament.getMedDepotlegal(), Toast.LENGTH_LONG).show();
+        MedicamentDetailsFragment medicamentDetailsFragment = MedicamentDetailsFragment.newInstance(medicament.getMedDepotlegal());
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .addToBackStack(null)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        medicamentDetailsFragment,
+                        medicamentDetailsFragment.getTag()
+                ).commit();
     }
 
     private void insertDataToDatabase() {

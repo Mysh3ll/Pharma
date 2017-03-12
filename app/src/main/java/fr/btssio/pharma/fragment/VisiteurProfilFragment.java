@@ -28,8 +28,8 @@ import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
  * create an instance of this fragment.
  */
 public class VisiteurProfilFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "vis_mat";
+    // the fragment initialization parameters, e.g. VIS_MAT
+    private static final String VIS_MAT = "vis_mat";
 
     private String mVis_mat;
 
@@ -54,7 +54,7 @@ public class VisiteurProfilFragment extends Fragment {
     public static VisiteurProfilFragment newInstance(String vis_mat) {
         VisiteurProfilFragment fragment = new VisiteurProfilFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, vis_mat);
+        args.putString(VIS_MAT, vis_mat);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,12 +63,10 @@ public class VisiteurProfilFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mVis_mat = getArguments().getString(ARG_PARAM1);
+            mVis_mat = getArguments().getString(VIS_MAT);
             //Récupération du visiteur connecté
             visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
             visiteur = visiteurDAO.getByVisMat(mVis_mat);
-
-
         }
     }
 

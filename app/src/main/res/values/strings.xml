@@ -25,4 +25,9 @@
     <string name="visiteurville">Ville</string>
     <string name="maintitle">PHARMA</string>
     <string name="btnnewrapport">Nouveau rapport</string>
+    <string name="medicamentdepotlegal">Dépôt Légal</string>
+    <string name="medicamentnom">Nom Comercial</string>
+    <string name="medicamentcomposition">Composition</string>
+    <string name="medicamenteffet">Effet</string>
+    <string name="medicamentcontreindication">Contre Indication</string>
 </resources>
