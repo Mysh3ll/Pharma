@@ -1,0 +1,151 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.PraticienDetailsFragment">
+
+    <!--Praticien Nom-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienNom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienNom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticiennom"
+            android:inputType="textCapWords|textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Praticien Prénom-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienPrenom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPraticienNom"
+        app:layout_constraintHorizontal_bias="0.503">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienPrenom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticienprenom"
+            android:inputType="textCapWords|textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Praticien Adresse-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienAdresse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPraticienPrenom"
+        app:layout_constraintHorizontal_bias="0.503">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienAdresse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticienadresse"
+            android:inputType="textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Praticien CP-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienCP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPraticienAdresse"
+        app:layout_constraintHorizontal_bias="0.503">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienCP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticiencp"
+            android:inputType="numberDecimal"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Praticien Ville-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienVille"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPraticienCP"
+        app:layout_constraintHorizontal_bias="0.503">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienVille"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticienville"
+            android:inputType="textCapWords|text"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Praticien Coef-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inputLayoutPraticienCoef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPraticienVille"
+        app:layout_constraintHorizontal_bias="0.503">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPraticienCoef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/praticiencoef"
+            android:inputType="textCapWords|text"/>
+    </android.support.design.widget.TextInputLayout>
+
+</android.support.constraint.ConstraintLayout>

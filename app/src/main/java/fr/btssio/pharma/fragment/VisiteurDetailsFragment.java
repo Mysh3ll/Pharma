@@ -48,7 +48,7 @@ public class VisiteurDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             String mVis_mat = getArguments().getString(VIS_MAT);
-            //Récupération du médicament sélectionné
+            //Récupération du visiteur sélectionné
             VisiteurDAO visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
             visiteur = visiteurDAO.getByVisMat(mVis_mat);
         }

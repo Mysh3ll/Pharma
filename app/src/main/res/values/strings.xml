@@ -30,4 +30,10 @@
     <string name="medicamentcomposition">Composition</string>
     <string name="medicamenteffet">Effet</string>
     <string name="medicamentcontreindication">Contre Indication</string>
+    <string name="praticiennom">Nom</string>
+    <string name="praticienprenom">Prénom</string>
+    <string name="praticienadresse">Adresse</string>
+    <string name="praticiencp">Code Postal</string>
+    <string name="praticienville">Ville</string>
+    <string name="praticiencoef">Coef</string>
 </resources>

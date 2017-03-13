@@ -21,6 +21,7 @@ import android.widget.Toast;
 import fr.btssio.pharma.fragment.FamilleFragment;
 import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
 import fr.btssio.pharma.fragment.MedicamentFragment;
+import fr.btssio.pharma.fragment.PraticienDetailsFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
 import fr.btssio.pharma.fragment.VisiteurDetailsFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
@@ -222,7 +223,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Praticien praticien) {
-        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
+        PraticienDetailsFragment praticienDetailsFragment = PraticienDetailsFragment.newInstance(praticien.getPraNum());
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .addToBackStack(null)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        praticienDetailsFragment,
+                        praticienDetailsFragment.getTag()
+                ).commit();
+//        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
