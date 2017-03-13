@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,27 +18,19 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.btssio.pharma.fragment.FamilleFragment;
 import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
 import fr.btssio.pharma.fragment.MedicamentFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
+import fr.btssio.pharma.fragment.VisiteurDetailsFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Famille;
-import fr.btssio.pharma.orm.gen.FamilleDAO;
-import fr.btssio.pharma.orm.gen.FamilleDAOImpl;
 import fr.btssio.pharma.orm.gen.Medicament;
-import fr.btssio.pharma.orm.gen.MedicamentDAO;
-import fr.btssio.pharma.orm.gen.MedicamentDAOImpl;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
-import fr.btssio.pharma.orm.runtime.util.SimpleSQLiteOpenHelper;
-import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -216,7 +207,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Visiteur visiteur) {
-        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
+        VisiteurDetailsFragment visiteurDetailsFragment = VisiteurDetailsFragment.newInstance(visiteur.getVisMat());
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .addToBackStack(null)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        visiteurDetailsFragment,
+                        visiteurDetailsFragment.getTag()
+                ).commit();
+//        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
     }
 
     @Override

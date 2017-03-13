@@ -31,13 +31,13 @@ public class VisiteurProfilFragment extends Fragment {
     // the fragment initialization parameters, e.g. VIS_MAT
     private static final String VIS_MAT = "vis_mat";
 
-    private String mVis_mat;
-
     private OnFragmentInteractionListener mListener;
     private VisiteurDAO visiteurDAO;
     private Visiteur visiteur;
 
-    private TextView etVisiteurNom, etVisiteurPrenom, etVisiteurAdresse, etVisiteurCP, etVisiteurVille;
+    private TextView etVisiteurAdresse;
+    private TextView etVisiteurCP;
+    private TextView etVisiteurVille;
 
     public VisiteurProfilFragment() {
         // Required empty public constructor
@@ -63,7 +63,7 @@ public class VisiteurProfilFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mVis_mat = getArguments().getString(VIS_MAT);
+            String mVis_mat = getArguments().getString(VIS_MAT);
             //Récupération du visiteur connecté
             visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
             visiteur = visiteurDAO.getByVisMat(mVis_mat);
@@ -78,8 +78,8 @@ public class VisiteurProfilFragment extends Fragment {
         View view = layoutInflater.inflate(R.layout.fragment_visiteur_profil, container, false);
 
         //Autocomplétion des champs
-        etVisiteurNom = (TextView) view.findViewById(R.id.etVisiteurNom);
-        etVisiteurPrenom = (TextView) view.findViewById(R.id.etVisiteurPrenom);
+        TextView etVisiteurNom = (TextView) view.findViewById(R.id.etVisiteurNom);
+        TextView etVisiteurPrenom = (TextView) view.findViewById(R.id.etVisiteurPrenom);
         etVisiteurAdresse = (TextView) view.findViewById(R.id.etVisiteurAdresse);
         etVisiteurCP = (TextView) view.findViewById(R.id.etVisiteurCP);
         etVisiteurVille = (TextView) view.findViewById(R.id.etVisiteurVille);
