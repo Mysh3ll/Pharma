@@ -23,13 +23,14 @@ import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
 import fr.btssio.pharma.fragment.MedicamentFragment;
 import fr.btssio.pharma.fragment.PraticienDetailsFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
-import fr.btssio.pharma.fragment.RapportVisiteNewFragment;
+import fr.btssio.pharma.fragment.RapportVisiteFragment;
 import fr.btssio.pharma.fragment.VisiteurDetailsFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Famille;
 import fr.btssio.pharma.orm.gen.Medicament;
 import fr.btssio.pharma.orm.gen.Praticien;
+import fr.btssio.pharma.orm.gen.RapportVisite;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity
         PraticienFragment.OnListFragmentInteractionListener,
         VisiteurProfilFragment.OnFragmentInteractionListener,
         FamilleFragment.OnListFragmentInteractionListener,
-        MedicamentFragment.OnListFragmentInteractionListener {
+        MedicamentFragment.OnListFragmentInteractionListener,
+        RapportVisiteFragment.OnListFragmentInteractionListener{
 
     private static final String FAM_CODE = "fam_code";
     private VisiteurDAO visiteurDAO;
@@ -151,7 +153,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_compte_rendu) {
-            // new raaport
+            RapportVisiteFragment rapportVisiteFragment = RapportVisiteFragment.newInstance(1, vis_mat);
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .addToBackStack(null)
+                    .replace(
+                            R.id.constraintlayout_for_fragment,
+                            rapportVisiteFragment,
+                            rapportVisiteFragment.getTag()
+                    ).commit();
         } else if (id == R.id.nav_visiteur) {
             VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();
@@ -503,6 +514,12 @@ public class MainActivity extends AppCompatActivity
 //        List<Medicament> list = new ArrayList<>();
 //        list.addAll(medicamentDAO.getMedicamentList());
 //        Log.d("medicament", list.toString());
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(RapportVisite rapportVisite) {
+        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
 
     }
 }
