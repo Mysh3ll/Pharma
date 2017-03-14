@@ -23,6 +23,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import fr.btssio.pharma.R;
+import fr.btssio.pharma.orm.gen.Medicament;
+import fr.btssio.pharma.orm.gen.MedicamentDAO;
+import fr.btssio.pharma.orm.gen.MedicamentDAOImpl;
+import fr.btssio.pharma.orm.gen.Offrir;
+import fr.btssio.pharma.orm.gen.OffrirDAO;
+import fr.btssio.pharma.orm.gen.OffrirDAOImpl;
 import fr.btssio.pharma.orm.gen.Praticien;
 import fr.btssio.pharma.orm.gen.PraticienDAO;
 import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
@@ -41,13 +47,11 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
     // the fragment initialization parameters, e.g. VIS_MAT
     private static final String VIS_MAT = "vis_mat";
 
-    private RapportVisiteDAO rapportVisiteDAO;
-
     EditText etRapportVisiteDate;
     TextView etRapportVisitebilan;
-    Spinner spinnerMotif, spinnerPraticien;
-    String selectedMotif, selectedPraticien;
-    int positionSelectedPraticien;
+    Spinner spinnerMotif, spinnerPraticien, spinnerMedicament, spinnerQuantite;
+    String selectedMotif, selectedPraticien, selectedMedicament, selectedQuantite;
+    int positionSelectedPraticien, positionSelectedMedicament;
     private Visiteur visiteur;
 
     // Variables for text watcher
@@ -166,7 +170,6 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
 
         // Spinner rapport visite praticien
         spinnerPraticien = (Spinner) view.findViewById(R.id.spRapportVisitePraticien);
-        // Spinner Drop down elements
         // Récupération des praticiens en BDD
         PraticienDAO praticienDAO = new PraticienDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
         List<Praticien> praticiens = praticienDAO.getPraticienList(PraticienDAO.PRA_NOM, OrderByDirection.ASC);
@@ -177,13 +180,38 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
             prat_list.add(praticien.getPraNom() + " " + praticien.getPraPrenom());
         }
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, prat_list);
+        ArrayAdapter<String> praticienAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, prat_list);
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        praticienAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Spinner click listener
         spinnerPraticien.setOnItemSelectedListener(this);
         // attaching data adapter to spinnerPraticien
-        spinnerPraticien.setAdapter(dataAdapter);
+        spinnerPraticien.setAdapter(praticienAdapter);
+
+        // Spinner rapport visite médicament
+        spinnerMedicament = (Spinner) view.findViewById(R.id.spRapportVisiteMedicament);
+        // Récupération des médicaments en BDD
+        MedicamentDAO medicamentDAO = new MedicamentDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
+        List<Medicament> medicaments = medicamentDAO.getMedicamentList(MedicamentDAO.MED_NOMCOM, OrderByDirection.ASC);
+        // Création de la liste pour le spinnerMedicament
+        List<String> med_list = new ArrayList<>();
+        for (Medicament medicament :
+                medicaments) {
+            med_list.add(medicament.getMedNomcom());
+        }
+        // Creating adapter for spinner
+        ArrayAdapter<String> medicamentAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, med_list);
+        // Drop down layout style - list view with radio button
+        medicamentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Spinner click listener
+        spinnerMedicament.setOnItemSelectedListener(this);
+        // attaching data adapter to spinnerMedicament
+        spinnerMedicament.setAdapter(medicamentAdapter);
+
+        // Spinner rapport visite médicament quantité
+        spinnerQuantite = (Spinner) view.findViewById(R.id.spRapportVisiteQuantite);
+        // Spinner click listener
+        spinnerQuantite.setOnItemSelectedListener(this);
 
         // Validation du nouveau rapport
         Button btnValider = (Button) view.findViewById(R.id.btnRapportVisite);
@@ -202,6 +230,13 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
         } else if (parent.getId() == R.id.spRapportVisitePraticien) {
             selectedPraticien = parent.getItemAtPosition(position).toString();
             positionSelectedPraticien = position;
+
+        } else if (parent.getId() == R.id.spRapportVisiteQuantite) {
+            selectedQuantite = parent.getItemAtPosition(position).toString();
+
+        } else if (parent.getId() == R.id.spRapportVisiteMedicament) {
+            selectedMedicament = parent.getItemAtPosition(position).toString();
+            positionSelectedMedicament = position;
         }
 
     }
@@ -214,7 +249,7 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
     @Override
     public void onClick(View v) {
         RapportVisite rapportVisite;
-        rapportVisiteDAO = new RapportVisiteDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
+        RapportVisiteDAO rapportVisiteDAO = new RapportVisiteDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
 
         // Récupération de la valeur des champs
         boolean error = false;
@@ -235,6 +270,7 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
             List<Praticien> praticiens = praticienDAO.getPraticienList(PraticienDAO.PRA_NOM, OrderByDirection.ASC);
             int pra_num = praticiens.get(positionSelectedPraticien).getPraNum();
             Praticien praticien = praticienDAO.getByPraNum(pra_num);
+
             // Création du rapport de visite
             rapportVisite = new RapportVisite();
             rapportVisite.setRapDate(getRapportVisiteDate());
@@ -242,8 +278,28 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
             rapportVisite.setRapBilan(getRapportVisiteBilan());
             rapportVisite.setVisiteurVisMat(visiteur.getVisMat());
             rapportVisite.setPraticienPraNum(praticien.getPraNum());
+
             // Insertion du rapport de visite en BDD
             rapportVisiteDAO.insert(rapportVisite);
+
+            // Récupération du médicament
+            if (Integer.valueOf(selectedQuantite) > 0) {
+                MedicamentDAOImpl medicamentDAO = new MedicamentDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
+                List<Medicament> medicaments = medicamentDAO.getMedicamentList(MedicamentDAO.MED_NOMCOM, OrderByDirection.ASC);
+                String med_depot_legal = medicaments.get(positionSelectedMedicament).getMedDepotlegal();
+                Medicament medicament = medicamentDAO.getByMedDepotlegal(med_depot_legal);
+
+                // Ajout du médicament offert en BDD
+                OffrirDAO offrirDAO = new OffrirDAOImpl(new PharmaSQLiteOpenHelper(getContext()));
+                Offrir offrir = new Offrir();
+                offrir.setOffQte(Integer.valueOf(selectedQuantite));
+                offrir.setMedicamentMedDepotlegal(medicament.getMedDepotlegal());
+                offrir.setRapportVisiteRapNum(rapportVisite.getRapNum());
+
+                // Insertion du médicament offert en BDD
+                offrirDAO.insert(offrir);
+
+            }
 
             Toast.makeText(getContext(), "Rapport de visite ajouté avec succès.", Toast.LENGTH_LONG).show();
             FragmentManager manager = getFragmentManager();
