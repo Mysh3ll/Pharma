@@ -36,4 +36,23 @@
     <string name="praticiencp">Code Postal</string>
     <string name="praticienville">Ville</string>
     <string name="praticiencoef">Coef</string>
+    <string name="rapportvisitedate">Date (JJ-MM-YYYY)</string>
+    <string name="rapportvisitemotif">Motif</string>
+    <string name="rapportvisitebilan">Bilan</string>
+    <string name="rapportvisitepraticien">Praticien</string>
+    <string name="button_rapport_visite">VALIDER</string>
+
+    <!-- Spinner Rapport Visite Motif -->
+    <string-array name="rapport_visite_motif">
+        <item>Prospection</item>
+        <item>Visite de courtoisie</item>
+        <item>Relance</item>
+        <item>Autre</item>
+    </string-array>
+
+    <!-- Spinner Rapport Visite Praticien -->
+    <string-array name="rapport_visite_praticien">
+        <item></item>
+    </string-array>
+
 </resources>
