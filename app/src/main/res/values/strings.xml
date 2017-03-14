@@ -45,14 +45,9 @@
     <!-- Spinner Rapport Visite Motif -->
     <string-array name="rapport_visite_motif">
         <item>Prospection</item>
-        <item>Visite de courtoisie</item>
+        <item>Visite</item>
         <item>Relance</item>
         <item>Autre</item>
-    </string-array>
-
-    <!-- Spinner Rapport Visite Praticien -->
-    <string-array name="rapport_visite_praticien">
-        <item></item>
     </string-array>
 
 </resources>

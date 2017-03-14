@@ -73,22 +73,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        insertDataToDatabase();
+//        insertDataToDatabase();
+
+        //Récupération du visiteur connecté
+        vis_mat = getIntent().getExtras().getString("vis_mat");
 
         //Load fragment_main
-        MainFragment mainFragment = new MainFragment();
+        MainFragment mainFragment = MainFragment.newInstance(vis_mat);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
+                .addToBackStack(null)
                 .replace(
                         R.id.constraintlayout_for_fragment,
                         mainFragment,
                         mainFragment.getTag()
                 ).commit();
-
-        //Récupération du visiteur connecté
-        vis_mat = getIntent().getExtras().getString("vis_mat");
-//        visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
-//        Visiteur visiteur = visiteurDAO.getByVisMat(vis_mat);
 
     }
 
@@ -152,16 +151,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_compte_rendu) {
-            RapportVisiteNewFragment rapportVisiteNewFragment = new RapportVisiteNewFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction()
-                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
-                    .replace(
-                            R.id.constraintlayout_for_fragment,
-                            rapportVisiteNewFragment,
-                            rapportVisiteNewFragment.getTag()
-                    ).commit();
+            // new raaport
         } else if (id == R.id.nav_visiteur) {
             VisiteurFragment visiteurFragment = VisiteurFragment.newInstance(1);
             FragmentManager manager = getSupportFragmentManager();

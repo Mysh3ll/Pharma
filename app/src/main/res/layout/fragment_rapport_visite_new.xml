@@ -25,12 +25,12 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/rapportvisitedate"
-            android:inputType="textCapWords|textPersonName" />
+            android:inputType="date" />
     </android.support.design.widget.TextInputLayout>
 
     <!--RapportVisite Motif-->
     <Spinner
-        android:id="@+id/etRapportVisiteMotif"
+        android:id="@+id/spRapportVisiteMotif"
         android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -57,7 +57,7 @@
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRapportVisiteMotif">
+        app:layout_constraintTop_toBottomOf="@+id/spRapportVisiteMotif">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etRapportVisitebilan"
@@ -65,12 +65,12 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/rapportvisitebilan"
-            android:inputType="textCapWords|textMultiLine" />
+            android:inputType="textMultiLine" />
     </android.support.design.widget.TextInputLayout>
 
     <!--RapportVisite Praticien-->
     <Spinner
-        android:id="@+id/etRapportVisitePraticien"
+        android:id="@+id/spRapportVisitePraticien"
         android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -79,7 +79,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:entries="@array/rapport_visite_praticien"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputLayoutRapportVisiteBilan" />
@@ -95,6 +94,6 @@
         android:text="@string/button_rapport_visite"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRapportVisitePraticien" />
+        app:layout_constraintTop_toBottomOf="@+id/spRapportVisitePraticien" />
 
 </android.support.constraint.ConstraintLayout>
