@@ -41,6 +41,13 @@
     <string name="rapportvisitebilan">Bilan</string>
     <string name="rapportvisitepraticien">Praticien</string>
     <string name="button_rapport_visite">VALIDER</string>
+    <string name="rapportvistenum">Numéro de rapport</string>
+    <string name="rapportvistedate">Date</string>
+    <string name="rapportvistemotif">Motif</string>
+    <string name="rapportvistebilan">Bilan</string>
+    <string name="rapportvistepraticien">Praticien</string>
+    <string name="rapportvistemedicament">Médicament offert</string>
+    <string name="rapportvistequantite">Quantité</string>
 
     <!-- Spinner Rapport Visite Motif -->
     <string-array name="rapport_visite_motif">

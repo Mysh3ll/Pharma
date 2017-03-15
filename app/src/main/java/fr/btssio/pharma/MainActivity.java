@@ -23,6 +23,7 @@ import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
 import fr.btssio.pharma.fragment.MedicamentFragment;
 import fr.btssio.pharma.fragment.PraticienDetailsFragment;
 import fr.btssio.pharma.fragment.PraticienFragment;
+import fr.btssio.pharma.fragment.RapportVisiteDetailsFragment;
 import fr.btssio.pharma.fragment.RapportVisiteFragment;
 import fr.btssio.pharma.fragment.VisiteurDetailsFragment;
 import fr.btssio.pharma.fragment.VisiteurFragment;
@@ -42,11 +43,9 @@ public class MainActivity extends AppCompatActivity
         VisiteurProfilFragment.OnFragmentInteractionListener,
         FamilleFragment.OnListFragmentInteractionListener,
         MedicamentFragment.OnListFragmentInteractionListener,
-        RapportVisiteFragment.OnListFragmentInteractionListener{
+        RapportVisiteFragment.OnListFragmentInteractionListener {
 
     private static final String FAM_CODE = "fam_code";
-    private VisiteurDAO visiteurDAO;
-    private TextView tvVisiteurNom, tvVisiteurPrenom;
     boolean doubleBackToExitPressedOnce = false;
     private String vis_mat;
 
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = MainFragment.newInstance(vis_mat);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .replace(
                         R.id.constraintlayout_for_fragment,
                         mainFragment,
@@ -279,6 +278,22 @@ public class MainActivity extends AppCompatActivity
                         medicamentDetailsFragment,
                         medicamentDetailsFragment.getTag()
                 ).commit();
+    }
+
+    @Override
+    public void onListFragmentInteraction(RapportVisite rapportVisite) {
+        RapportVisiteDetailsFragment rapportVisiteDetailsFragment = RapportVisiteDetailsFragment.newInstance(rapportVisite.getRapNum());
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .addToBackStack(null)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        rapportVisiteDetailsFragment,
+                        rapportVisiteDetailsFragment.getTag()
+                ).commit();
+//        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
+
     }
 
     private void insertDataToDatabase() {
@@ -514,12 +529,6 @@ public class MainActivity extends AppCompatActivity
 //        List<Medicament> list = new ArrayList<>();
 //        list.addAll(medicamentDAO.getMedicamentList());
 //        Log.d("medicament", list.toString());
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(RapportVisite rapportVisite) {
-        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
 
     }
 }
