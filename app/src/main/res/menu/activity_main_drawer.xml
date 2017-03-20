@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_compte_rendu"
             android:icon="@drawable/ic_menu_compte_rendu"
-            android:title="@string/nav_compte_rendu" />
+            android:title="@string/nav_compte_rendu"
+            app:actionViewClass="android.widget.TextView" />
         <item
             android:id="@+id/nav_visiteur"
             android:icon="@drawable/ic_menu_visiteur"
-            android:title="@string/nav_visiteur" />
+            android:title="@string/nav_visiteur"
+            app:actionViewClass="android.widget.TextView"/>
         <item
             android:id="@+id/nav_praticien"
             android:icon="@drawable/ic_menu_praticien"
-            android:title="@string/nav_praticien" />
+            android:title="@string/nav_praticien"
+            app:actionViewClass="android.widget.TextView"/>
         <item
             android:id="@+id/nav_medicament"
             android:icon="@drawable/ic_menu_medicament"
-            android:title="@string/nav_medicament" />
+            android:title="@string/nav_medicament"
+            app:actionViewClass="android.widget.TextView"/>
     </group>
 
     <item android:title="Mon Compte">

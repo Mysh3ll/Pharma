@@ -1,6 +1,7 @@
 package fr.btssio.pharma.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import fr.btssio.pharma.MainActivity;
 import fr.btssio.pharma.R;
 import fr.btssio.pharma.orm.gen.Medicament;
 import fr.btssio.pharma.orm.gen.MedicamentDAO;
@@ -46,6 +48,7 @@ import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 public class RapportVisiteNewFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     // the fragment initialization parameters, e.g. VIS_MAT
     private static final String VIS_MAT = "vis_mat";
+    private static final int REQUEST_CODE = 1;
 
     EditText etRapportVisiteDate;
     TextView etRapportVisitebilan;
@@ -302,8 +305,11 @@ public class RapportVisiteNewFragment extends Fragment implements AdapterView.On
             }
 
             Toast.makeText(getContext(), "Rapport de visite ajouté avec succès.", Toast.LENGTH_LONG).show();
-            FragmentManager manager = getFragmentManager();
-            manager.popBackStack();
+            Intent mainIntent = new Intent(getContext(), MainActivity.class);
+            mainIntent.putExtra("vis_mat", visiteur.getVisMat());
+            // Clear all stack and launch new intent
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivityForResult(mainIntent, REQUEST_CODE);
 
         }
     }

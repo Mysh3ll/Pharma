@@ -1,11 +1,14 @@
 package fr.btssio.pharma;
 
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import fr.btssio.pharma.fragment.FamilleFragment;
 import fr.btssio.pharma.fragment.MedicamentDetailsFragment;
@@ -30,11 +35,19 @@ import fr.btssio.pharma.fragment.VisiteurFragment;
 import fr.btssio.pharma.fragment.VisiteurProfilFragment;
 import fr.btssio.pharma.orm.gen.Famille;
 import fr.btssio.pharma.orm.gen.Medicament;
+import fr.btssio.pharma.orm.gen.MedicamentDAO;
+import fr.btssio.pharma.orm.gen.MedicamentDAOImpl;
 import fr.btssio.pharma.orm.gen.Praticien;
+import fr.btssio.pharma.orm.gen.PraticienDAO;
+import fr.btssio.pharma.orm.gen.PraticienDAOImpl;
 import fr.btssio.pharma.orm.gen.RapportVisite;
+import fr.btssio.pharma.orm.gen.RapportVisiteDAO;
+import fr.btssio.pharma.orm.gen.RapportVisiteDAOImpl;
 import fr.btssio.pharma.orm.gen.Visiteur;
 import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
+import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
+import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -48,6 +61,9 @@ public class MainActivity extends AppCompatActivity
     private static final String FAM_CODE = "fam_code";
     boolean doubleBackToExitPressedOnce = false;
     private String vis_mat;
+
+    // Badge navigation drawer
+    TextView baCompteRendu, baVisiteur, baPraticien, baMedicament;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +89,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Get view of badges
+        baCompteRendu = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_compte_rendu));
+        baVisiteur = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_visiteur));
+        baPraticien = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_praticien));
+        baMedicament = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().findItem(R.id.nav_medicament));
+
+        // This method will initialize the count value
+        initializeCountDrawer();
 
 //        insertDataToDatabase();
 
@@ -293,6 +318,45 @@ public class MainActivity extends AppCompatActivity
                         rapportVisiteDetailsFragment.getTag()
                 ).commit();
 //        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
+
+    }
+
+    private void initializeCountDrawer(){
+        // Compte Rendu
+        RapportVisiteDAO rapportVisiteDAO = new RapportVisiteDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+        List<RapportVisite> rapportVisites = rapportVisiteDAO.getRapportVisiteList();
+        int countRapportVisite = rapportVisites.size();
+        baCompteRendu.setGravity(Gravity.CENTER_VERTICAL);
+        baCompteRendu.setTypeface(null, Typeface.BOLD);
+        baCompteRendu.setTextColor(getResources().getColor(R.color.colorAccent));
+        baCompteRendu.setText(String.valueOf(countRapportVisite));
+
+        // Visiteur
+        VisiteurDAO visiteurDAO = new VisiteurDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+        List<Visiteur> visiteurs = visiteurDAO.getVisiteurList();
+        int countVisiteur = visiteurs.size();
+        baVisiteur.setGravity(Gravity.CENTER_VERTICAL);
+        baVisiteur.setTypeface(null, Typeface.BOLD);
+        baVisiteur.setTextColor(getResources().getColor(R.color.colorAccent));
+        baVisiteur.setText(String.valueOf(countVisiteur));
+
+        // Praticien
+        PraticienDAO praticienDAO = new PraticienDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+        List<Praticien> praticiens = praticienDAO.getPraticienList();
+        int countPraticien = praticiens.size();
+        baPraticien.setGravity(Gravity.CENTER_VERTICAL);
+        baPraticien.setTypeface(null, Typeface.BOLD);
+        baPraticien.setTextColor(getResources().getColor(R.color.colorAccent));
+        baPraticien.setText(String.valueOf(countPraticien));
+
+        // Médicaments
+        MedicamentDAO medicamentDAO = new MedicamentDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
+        List<Medicament> medicaments = medicamentDAO.getMedicamentList();
+        int countMedicament = medicaments.size();
+        baMedicament.setGravity(Gravity.CENTER_VERTICAL);
+        baMedicament.setTypeface(null, Typeface.BOLD);
+        baMedicament.setTextColor(getResources().getColor(R.color.colorAccent));
+        baMedicament.setText(String.valueOf(countMedicament));
 
     }
 
