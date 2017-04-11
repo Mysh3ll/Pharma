@@ -1,5 +1,6 @@
 package fr.btssio.pharma;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -72,15 +73,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -106,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         MainFragment mainFragment = MainFragment.newInstance(vis_mat);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
-//                .addToBackStack(null)
+                .addToBackStack("main")
                 .replace(
                         R.id.constraintlayout_for_fragment,
                         mainFragment,
@@ -117,55 +109,64 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
+        String mainFragment = "main";
         //Listener for back button on Fragment
         FragmentManager fm = getSupportFragmentManager();
+        int nb = fm.getBackStackEntryCount();
+
         if (fm.getBackStackEntryCount() > 0) { // back to the parent (fragment)
-            fm.popBackStack();
-        } else {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (!drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.openDrawer(GravityCompat.START);
-            } else {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
-                    return;
+            String fragmentTag = fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName(); // name of the top stack fragment
+
+            if (fragmentTag != null) {
+                switch (fragmentTag) {
+                    case "compte_rendu":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    case "visiteur":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    case "praticien":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    case "medicament":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    case "profil":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    default:
+                        break;
                 }
-                this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, "Appuyer deux fois pour quitter", Toast.LENGTH_SHORT).show();
+            } else {
+                fm.popBackStack();
+            }
 
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
+            if (fm.getBackStackEntryCount() == 1) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (!drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.openDrawer(GravityCompat.START);
+                } else {
+                    if (doubleBackToExitPressedOnce) {
+                        finish();
                     }
-                }, 2000);
+                    this.doubleBackToExitPressedOnce = true;
+                    Toast.makeText(this, "Appuyer deux fois pour quitter", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                }
             }
         }
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
+                    .addToBackStack("compte_rendu")
                     .replace(
                             R.id.constraintlayout_for_fragment,
                             rapportVisiteFragment,
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
+                    .addToBackStack("visiteur")
                     .replace(
                             R.id.constraintlayout_for_fragment,
                             visiteurFragment,
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
+                    .addToBackStack("praticien")
                     .replace(
                             R.id.constraintlayout_for_fragment,
                             praticienFragment,
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
+                    .addToBackStack("medicament")
                     .replace(
                             R.id.constraintlayout_for_fragment,
                             familleFragment,
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
-                    .addToBackStack(null)
+                    .addToBackStack("profil")
                     .replace(
                             R.id.constraintlayout_for_fragment,
                             visiteurProfilFragment,
@@ -319,7 +320,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void initializeCountDrawer(){
+    private void initializeCountDrawer() {
         // Compte Rendu
         RapportVisiteDAO rapportVisiteDAO = new RapportVisiteDAOImpl(new PharmaSQLiteOpenHelper(getApplicationContext()));
         List<RapportVisite> rapportVisites = rapportVisiteDAO.getRapportVisiteList();

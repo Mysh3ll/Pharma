@@ -48,6 +48,7 @@
     <string name="rapportvistepraticien">Praticien</string>
     <string name="rapportvistemedicament">Médicament offert</string>
     <string name="rapportvistequantite">Quantité</string>
+    <string name="home_screen">PHARMA EUROPE</string>
 
     <!-- Spinner Rapport Visite Motif -->
     <string-array name="rapport_visite_motif">
