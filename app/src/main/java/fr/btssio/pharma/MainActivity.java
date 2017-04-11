@@ -22,6 +22,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import java.util.List;
 
 import fr.btssio.pharma.fragment.FamilleFragment;
@@ -49,6 +52,7 @@ import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
 import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
+import layout.MapFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -57,7 +61,8 @@ public class MainActivity extends AppCompatActivity
         VisiteurProfilFragment.OnFragmentInteractionListener,
         FamilleFragment.OnListFragmentInteractionListener,
         MedicamentFragment.OnListFragmentInteractionListener,
-        RapportVisiteFragment.OnListFragmentInteractionListener {
+        RapportVisiteFragment.OnListFragmentInteractionListener,
+        OnMapReadyCallback {
 
     private static final String FAM_CODE = "fam_code";
     boolean doubleBackToExitPressedOnce = false;
@@ -136,6 +141,10 @@ public class MainActivity extends AppCompatActivity
                         setTitle("Pharma");
                         break;
                     case "profil":
+                        fm.popBackStack(mainFragment, 0);
+                        setTitle("Pharma");
+                        break;
+                    case "map":
                         fm.popBackStack(mainFragment, 0);
                         setTitle("Pharma");
                         break;
@@ -230,6 +239,19 @@ public class MainActivity extends AppCompatActivity
                             visiteurProfilFragment,
                             visiteurProfilFragment.getTag()
                     ).commit();
+        } else if (id == R.id.nav_map) {
+            MapFragment mapFragment = MapFragment.newInstance();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                    .addToBackStack("map")
+                    .replace(
+                            R.id.constraintlayout_for_fragment,
+                            mapFragment,
+                            mapFragment.getTag()
+                    ).commit();
+
+            mapFragment.getMapAsync(this);
         }
 
         // Set action bar title
@@ -317,6 +339,11 @@ public class MainActivity extends AppCompatActivity
                         rapportVisiteDetailsFragment.getTag()
                 ).commit();
 //        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
     }
 

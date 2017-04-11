@@ -23,6 +23,11 @@
             android:icon="@drawable/ic_menu_medicament"
             android:title="@string/nav_medicament"
             app:actionViewClass="android.widget.TextView"/>
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_menu_map"
+            android:title="@string/nav_map"
+            app:actionViewClass="android.widget.TextView"/>
     </group>
 
     <item android:title="Mon Compte">

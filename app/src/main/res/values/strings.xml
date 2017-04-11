@@ -49,6 +49,7 @@
     <string name="rapportvistemedicament">Médicament offert</string>
     <string name="rapportvistequantite">Quantité</string>
     <string name="home_screen">PHARMA EUROPE</string>
+    <string name="nav_map">Carte</string>
 
     <!-- Spinner Rapport Visite Motif -->
     <string-array name="rapport_visite_motif">
