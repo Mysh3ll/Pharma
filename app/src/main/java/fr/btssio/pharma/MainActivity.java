@@ -1,30 +1,35 @@
 package fr.btssio.pharma;
 
-import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.btssio.pharma.fragment.FamilleFragment;
@@ -52,7 +57,7 @@ import fr.btssio.pharma.orm.gen.VisiteurDAO;
 import fr.btssio.pharma.fragment.MainFragment;
 import fr.btssio.pharma.orm.gen.VisiteurDAOImpl;
 import fr.btssio.pharma.sqllite.PharmaSQLiteOpenHelper;
-import layout.MapFragment;
+import fr.btssio.pharma.fragment.MapFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         FamilleFragment.OnListFragmentInteractionListener,
         MedicamentFragment.OnListFragmentInteractionListener,
         RapportVisiteFragment.OnListFragmentInteractionListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private static final String FAM_CODE = "fam_code";
     boolean doubleBackToExitPressedOnce = false;
@@ -240,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                             visiteurProfilFragment.getTag()
                     ).commit();
         } else if (id == R.id.nav_map) {
+
             MapFragment mapFragment = MapFragment.newInstance();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
@@ -345,6 +351,104 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+        // Coordonnées Praticien
+        MarkerOptions options = new MarkerOptions();
+        ArrayList<LatLng> latlngs = new ArrayList<>();
+
+        List<Praticien> praticiens = getAllPraticien();
+
+        for (Praticien unPraticien : praticiens) {
+            LatLng prat;
+            prat = getLocationFromAddress(getApplicationContext(), unPraticien.getPraVille());
+            latlngs.add(prat);
+        }
+
+//        LatLng prat = getLocationFromAddress(getApplicationContext(), "9 Rue d'Iraty 64510 Bordes");
+//        LatLng prat1 = getLocationFromAddress(getApplicationContext(), "9 impasse des coulemelles 64230 Lescar");
+//        LatLng prat2 = getLocationFromAddress(getApplicationContext(), "11 Rue d'Iraty 64510 Bordes");
+////        LatLng latLng = new LatLng(36.2048, 138.2529);
+//
+//        latlngs.add(prat);
+//        latlngs.add(prat1);
+//        latlngs.add(prat2);
+
+        for(int i = 0 ; i < praticiens.size() ; i++ ) {
+            options.position(latlngs.get(i));
+            options.title(praticiens.get(i).getPraNom() + " " + praticiens.get(i).getPraPrenom());
+            options.snippet(praticiens.get(i).getPraAdresse() + " " + praticiens.get(i).getPraCp() + " " + praticiens.get(i).getPraVille());
+            googleMap.addMarker(options).setTag(praticiens.get(i).getPraNum());
+        }
+
+        // Position de la caméra sur le pays France
+        LatLng france = new LatLng(46.237604, 2.213609);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(france, 5));
+
+        // Evénement lors du clique sur l'info bulle du marqueur
+        googleMap.setOnInfoWindowClickListener(this);
+
+//        for (LatLng point : latlngs) {
+//            options.position(point);
+//            options.title("someTitle");
+//            options.snippet("someDesc");
+//            googleMap.addMarker(options);
+//        }
+
+//        MarkerOptions markerOptions =
+//                new MarkerOptions()
+//                        .position(prat)
+//                        .title("Moi")
+//                        .snippet("Michel Pompas");
+//
+//        Marker marker = googleMap.addMarker(markerOptions);
+    }
+
+    public List<Praticien> getAllPraticien() {
+        //Récupération des praticiens en BDD
+        PraticienDAO praticienDAO = new PraticienDAOImpl(new PharmaSQLiteOpenHelper(this.getApplicationContext()));
+        List<Praticien> praticiens = praticienDAO.getPraticienList();
+
+        return praticiens;
+    }
+
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng position = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            position = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return position;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        PraticienDetailsFragment praticienDetailsFragment = PraticienDetailsFragment.newInstance(Integer.valueOf(String.valueOf(marker.getTag())));
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setCustomAnimations(R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
+                .addToBackStack(null)
+                .replace(
+                        R.id.constraintlayout_for_fragment,
+                        praticienDetailsFragment,
+                        praticienDetailsFragment.getTag()
+                ).commit();
     }
 
     private void initializeCountDrawer() {
@@ -385,5 +489,4 @@ public class MainActivity extends AppCompatActivity
         baMedicament.setText(String.valueOf(countMedicament));
 
     }
-
 }

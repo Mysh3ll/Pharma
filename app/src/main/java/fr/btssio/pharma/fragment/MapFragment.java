@@ -1,4 +1,4 @@
-package layout;
+package fr.btssio.pharma.fragment;
 
 
 import android.os.Bundle;
