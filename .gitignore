@@ -10,7 +10,6 @@
 
 # Generated files
 bin/
-gen/
 out/
 
 # Gradle files
@@ -56,4 +55,6 @@ freeline_project_description.json
 
 #ORM file
 Pharma_android_orm.zip
-pharma_create.sql
+/pharma_create.sql
+app/libs/
+app/src/main/res/drawable-v21/

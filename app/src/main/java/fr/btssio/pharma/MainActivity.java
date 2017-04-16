@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -245,7 +244,6 @@ public class MainActivity extends AppCompatActivity
                             visiteurProfilFragment.getTag()
                     ).commit();
         } else if (id == R.id.nav_map) {
-
             MapFragment mapFragment = MapFragment.newInstance();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
@@ -280,7 +278,6 @@ public class MainActivity extends AppCompatActivity
                         visiteurDetailsFragment,
                         visiteurDetailsFragment.getTag()
                 ).commit();
-//        Toast.makeText(getApplicationContext(), visiteur.getVisMat(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -295,7 +292,6 @@ public class MainActivity extends AppCompatActivity
                         praticienDetailsFragment,
                         praticienDetailsFragment.getTag()
                 ).commit();
-//        Toast.makeText(getApplicationContext(), praticien.getPraNum().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -315,7 +311,6 @@ public class MainActivity extends AppCompatActivity
                         medicamentFragment,
                         medicamentFragment.getTag()
                 ).commit();
-//        Toast.makeText(getApplicationContext(), famille.getFamCode().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -344,13 +339,10 @@ public class MainActivity extends AppCompatActivity
                         rapportVisiteDetailsFragment,
                         rapportVisiteDetailsFragment.getTag()
                 ).commit();
-//        Toast.makeText(getApplicationContext(), rapportVisite.getRapNum().toString(), Toast.LENGTH_LONG).show();
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
 
         // Coordonnées Praticien
         MarkerOptions options = new MarkerOptions();
@@ -363,15 +355,6 @@ public class MainActivity extends AppCompatActivity
             prat = getLocationFromAddress(getApplicationContext(), unPraticien.getPraVille());
             latlngs.add(prat);
         }
-
-//        LatLng prat = getLocationFromAddress(getApplicationContext(), "9 Rue d'Iraty 64510 Bordes");
-//        LatLng prat1 = getLocationFromAddress(getApplicationContext(), "9 impasse des coulemelles 64230 Lescar");
-//        LatLng prat2 = getLocationFromAddress(getApplicationContext(), "11 Rue d'Iraty 64510 Bordes");
-////        LatLng latLng = new LatLng(36.2048, 138.2529);
-//
-//        latlngs.add(prat);
-//        latlngs.add(prat1);
-//        latlngs.add(prat2);
 
         for(int i = 0 ; i < praticiens.size() ; i++ ) {
             options.position(latlngs.get(i));
@@ -387,20 +370,6 @@ public class MainActivity extends AppCompatActivity
         // Evénement lors du clique sur l'info bulle du marqueur
         googleMap.setOnInfoWindowClickListener(this);
 
-//        for (LatLng point : latlngs) {
-//            options.position(point);
-//            options.title("someTitle");
-//            options.snippet("someDesc");
-//            googleMap.addMarker(options);
-//        }
-
-//        MarkerOptions markerOptions =
-//                new MarkerOptions()
-//                        .position(prat)
-//                        .title("Moi")
-//                        .snippet("Michel Pompas");
-//
-//        Marker marker = googleMap.addMarker(markerOptions);
     }
 
     public List<Praticien> getAllPraticien() {
